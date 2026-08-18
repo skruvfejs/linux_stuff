@@ -26,9 +26,19 @@ id "$USER"
 echo "alias ll='ls -lah --color=auto'" >> ~/.bashrc
 source ~/.bashrc
 
+
+
+# ===============================================================================================
+# Installing most useful stuff
+# ===============================================================================================
+
 # Updating repository
 sudo apt update
 
-# Installing most common
+# Installing midnight commander
 sudo apt install mc
+
+# Installing locate
+sudo apt install locate
+sudo updatedb
 
