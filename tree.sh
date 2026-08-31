@@ -1,10 +1,5 @@
 #!/bin/bash
 
-sudo apt update
-sudo apt install tree
-
-tree
-
 # screwface@linuxmint:~/Projects/linux_stuff$ tree
 # .
 # ├── file1.examplea
@@ -14,3 +9,12 @@ tree
 # │   └── file04.example
 # └── file05.example
 
+# validate sudo and get password
+sudo -v
+
+# -y = yes on install
+sudo apt update
+sudo apt install -y tree
+
+# show tree
+tree
