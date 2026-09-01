@@ -1,44 +1,56 @@
 #!/bin/bash
 
-USER="screwface"
-
-
-# ================================================================================================
-# SUDO
-# ================================================================================================
-# Starta om scriptet med sudo om det inte redan körs som root
-if [[ $EUID -ne 0 ]]; then
-    exec sudo "$0" "$@"
-fi
-
-# Lägg till användaren i sudo-gruppen
-usermod -aG sudo "$USER"
-echo "Grupper för $USER:"
-id "$USER"
-
-
-
-
-# ===============================================================================================
-# Fixing ll command
-# ===============================================================================================
-# Usage: ll
-echo "alias ll='ls -lah --color=auto'" >> ~/.bashrc
-source ~/.bashrc
-
-
-
 # ===============================================================================================
 # Installing most useful stuff
 # ===============================================================================================
 
+# Checking and veriying with password
+sudo -v
+
+#########################################################################################
 # Updating repository
+#########################################################################################
 sudo apt update
 
+#########################################################################################
 # Installing midnight commander
-sudo apt install mc
+#########################################################################################
+sudo apt install -y mc
 
+#########################################################################################
 # Installing locate
-sudo apt install locate
+#########################################################################################
+sudo apt install -y locate
 sudo updatedb
+
+#########################################################################################
+# Tree
+#########################################################################################
+sudo apt install -y tree
+
+#########################################################################################
+# Fixing ll alias
+#########################################################################################
+FILE="/etc/profile.d/custom-aliases.sh"
+
+sudo tee "$FILE" > /dev/null <<'EOF'
+# Custom aliases
+alias ll='ls -lah --color=auto'
+EOF
+
+sudo chmod 644 "$FILE"
+echo "Alias ll har lagts till för alla användare."
+
+#########################################################################################
+# Adding linenumbers to nano/pico editor
+#########################################################################################
+
+NANORC="/etc/nanorc"
+
+if grep -qxF 'set linenumbers' "$NANORC"; then
+    echo "Radnumrering är redan aktiverad."
+else
+    echo 'set linenumbers' | sudo tee -a "$NANORC" > /dev/null
+    echo "Radnumrering har aktiverats i $NANORC."
+fi
 
